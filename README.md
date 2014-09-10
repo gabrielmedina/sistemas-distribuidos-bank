@@ -1,4 +1,3 @@
-sistemas-distribuidos
-=====================
+# Sistemas Distribuídos
 
-Repositório criado para armazenar os exercícios desenvolvidos na faculdade.
+> Repositório criado para armazenar os exercícios desenvolvidos na faculdade.
