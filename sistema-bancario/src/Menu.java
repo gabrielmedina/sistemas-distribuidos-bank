@@ -1,6 +1,6 @@
 
 public enum Menu {
-	MAIUSCULO(1), MINUSCULO(2);
+	DEPOSITAR(1), SACAR(2), SALDO(3), EXTRATO(4);
 	
 	private final int valor;
 	
