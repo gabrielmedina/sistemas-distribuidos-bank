@@ -1,87 +1,102 @@
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 
 public class Tratamento extends Thread {
+	// atributos
 	private Socket caixa;
 	private String name;
-	private ArrayList<Conta> contas;
 	
-	public Tratamento(Socket caixa, ArrayList<Conta> contas, String name) {
+	// contrutor
+	public Tratamento(Socket caixa, String name) {
 		this.caixa = caixa;
 		this.name = name;
-		this.contas = contas;
 	}
 	
+	// métodos
 	public void run(){
 		System.out.println(this.name + ": " + caixa.getInetAddress().getHostAddress() + " conectou-se.");
 		
+		Banco banco = new Banco();
+		
 		while(true){
-			Scanner s = null;
+			Scanner recebe = null;
 			
 			try {
-				s = new Scanner(caixa.getInputStream());
+				recebe = new Scanner(caixa.getInputStream());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}			
+			}
 			
-			String texto = new String();		   	
-			texto = s.nextLine();
+			String texto = new String();
+			texto = recebe.nextLine();
 			
-		   	PrintStream saida;
+		   	PrintStream envia;
 		   	
 		   	try {
-				saida = new PrintStream(caixa.getOutputStream());
-				saida.println(verificarLogin(texto));
+		   		envia = new PrintStream(caixa.getOutputStream());
+		   		envia.println(verificarLogin(texto, banco));
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		   	
-//			try {
-//				int num = Integer.parseInt(texto.substring(0,1));
-//				String msg = texto.substring(1,texto.length());
-//				
-//				saida = new PrintStream(caixa.getOutputStream());
-				
-//				switch(num){
-//					case 1:
-//						
-//						break;
-//				}
-				
-//				if(num == Menu.MAIUSCULO.getValor()){
-//					saida.println(msg.toUpperCase());
-//			   	} else {
-//			   		saida.println(msg.toLowerCase());
-//			   	}
-				
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+		   	if(verificarLogin(texto, banco).split("-")[0].equals("true")){
+		   		try {
+					envia = new PrintStream(caixa.getOutputStream());
+					
+					int opcao = 0;
+					
+					while(opcao != 9){
+						opcao = Integer.parseInt(recebe.nextLine());
+						
+						switch(opcao){
+							// depositar
+							case 1:
+								System.out.println("Depositar");
+								break;
+							// sacar
+							case 2:
+								System.out.println("Sacar");
+								break;
+							// saldo
+							case 3:
+								System.out.println("Saldo");
+								break;
+							// extrato
+							case 4:
+								System.out.println("Extrato");
+								break;
+							// ajuda
+							case 8:
+								System.out.println("Ajuda");
+								break;
+							// sair
+							case 9:
+								System.out.println("Sair");
+								break;
+						}			
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		   	}
 		}
 	}
 	
-	// Métodos	
-	private String verificarLogin(String texto){		
+	private String verificarLogin(String texto, Banco banco){
 		String[] dados = texto.split("-");
 		
-		System.out.println(this.contas);
+		for (Conta conta : banco.getContas()){
+			if(conta.getNumero().equals(dados[0]) && conta.getSenha().equals(dados[1])){
+				return "true-" + conta.getTitular();
+			}
+		}
 		
-//		for (Conta conta : this.contas) {
-//			System.out.println(conta.getNumero());
-//			
-//			if(conta.getNumero().equals(dados[0]) && conta.getSenha().equals(dados[1])){
-//				System.out.println("OPA!!");
-//				return "true";
-//			}
-//		}
-		
-		return "false";
+		return "false-Sua autenticação não foi realizada.";
 	}
 }

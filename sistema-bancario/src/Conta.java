@@ -1,15 +1,28 @@
 
 public class Conta {
+	// atributos
+	private String titular;
 	private String numero;
 	private String senha;
 	private double saldo;
 	
-	public Conta(String numero, String senha, double saldo){
+	// contrutor
+	public Conta(String titular, String numero, String senha, double saldo){
+		this.titular = titular;
 		this.numero = numero;
 		this.senha = senha;
 		this.saldo = saldo;
 	}
 	
+	// getters e setters
+	public String getTitular() {
+		return titular;
+	}
+
+	public void setTitular(String titular) {
+		this.titular = titular;
+	}
+
 	public String getNumero() {
 		return numero;
 	}
