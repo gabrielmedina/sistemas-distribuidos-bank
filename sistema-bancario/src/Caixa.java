@@ -27,24 +27,22 @@ public class Caixa {
      BufferedReader verificacao = new BufferedReader(new InputStreamReader(caixa.getInputStream()));
      System.out.println(verificacao.readLine());
      
+     System.out.println("Menu -----------------");
+     System.out.println("1 - Depositar");
+     System.out.println("2 - Sacar");
+     System.out.println("3 - Saldo");
+     System.out.println("4 - Extrato");
+     System.out.println("5 - Sair");
+     System.out.println("9 - Ajuda");
      
+     int opcao = teclado.nextInt();
      
-//     System.out.println("Menu -----------------");
-//     System.out.println("1 - Depositar");
-//     System.out.println("2 - Sacar");
-//     System.out.println("3 - Saldo");
-//     System.out.println("4 - Extrato");
-//     System.out.println("5 - Sair");
-//     System.out.println("9 - Ajuda");
-//     
-//     int opcao = teclado.nextInt();
-//     
-//     while (teclado.hasNextLine()) {
-//    	 saida.println(opcao);
-//       
-//         BufferedReader teste = new BufferedReader(new InputStreamReader(caixa.getInputStream()));
-//         System.out.println(teste.readLine());
-//     }
+     while (teclado.hasNextLine()) {
+    	 saida.println(opcao);
+       
+         BufferedReader teste = new BufferedReader(new InputStreamReader(caixa.getInputStream()));
+         System.out.println(teste.readLine());
+     }
 //     
      saida.close();
      teclado.close();

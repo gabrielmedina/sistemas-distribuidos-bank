@@ -4,6 +4,12 @@ public class Conta {
 	private String senha;
 	private double saldo;
 	
+	public Conta(String numero, String senha, double saldo){
+		this.numero = numero;
+		this.senha = senha;
+		this.saldo = saldo;
+	}
+	
 	public String getNumero() {
 		return numero;
 	}
