@@ -42,9 +42,33 @@ public class Caixa {
 	         System.out.println("9 - Sair");
 	         
 	         System.out.print("\nDigite o número da opção desejada: ");
-	         opcao = teclado.nextInt();
+	         opcao = Integer.parseInt(teclado.nextLine());
 	         
-	         envia.println(opcao);
+	         switch(opcao){
+	         	case 1:
+	         		System.out.println("\nDepósito --------------------");
+	         		System.out.print("Digite o número da conta: ");
+	         		String numero = teclado.nextLine();
+	         		
+	         		System.out.print("Digite o valor do depósito: ");
+	         		double valor = Double.parseDouble(teclado.nextLine());
+	         			
+	         		envia.println(opcao + "-" + numero + "-" + valor);
+	         		
+	         		String resultado[] = recebe.nextLine().split("-");
+	         		
+	         		if(resultado[0].equalsIgnoreCase("true")){
+	         			System.out.println("\nDepósito realizado com sucesso! -----------");
+	         			System.out.println("Titular: " + resultado[2]);
+	         			System.out.println("Valor: " + resultado[1]);
+	         		} else {
+	         			System.out.println(resultado[1]);
+	         		}
+	         		
+	         		break;
+	         }
+	         
+//	         envia.println(opcao);
     	 }
      } else {
     	 System.out.println("\nOps! -----------------");

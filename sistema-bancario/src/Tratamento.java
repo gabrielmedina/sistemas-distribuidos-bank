@@ -48,15 +48,16 @@ public class Tratamento extends Thread {
 		   		try {
 					envia = new PrintStream(caixa.getOutputStream());
 					
-					int opcao = 0;
+					texto = recebe.nextLine();
+					String resultado[] = texto.split("-");
 					
-					while(opcao != 9){
-						opcao = Integer.parseInt(recebe.nextLine());
-						
+					int opcao = Integer.parseInt(resultado[0]);
+					
+					while(opcao != 9){						
 						switch(opcao){
-							// depositar
+							// depositar 
 							case 1:
-								System.out.println("Depositar");
+								envia.println(depositar(resultado[1], Double.parseDouble(resultado[2]), banco));
 								break;
 							// sacar
 							case 2:
@@ -78,7 +79,7 @@ public class Tratamento extends Thread {
 							case 9:
 								System.out.println("Sair");
 								break;
-						}			
+						}
 					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -98,5 +99,19 @@ public class Tratamento extends Thread {
 		}
 		
 		return "false-Sua autenticação não foi realizada.";
+	}
+	
+	private String depositar(String numero, double valor, Banco banco){		
+		if(valor > 0){
+			for (Conta conta : banco.getContas()){
+				if(conta.getNumero().equalsIgnoreCase(numero)){
+					conta.setSaldo(conta.getSaldo() + valor);
+					
+					return "true-" + conta.getSaldo() + "-" + conta.getTitular();
+				}
+			}
+		}
+		
+		return "false-O depósito não foi efetuado.";
 	}
 }
