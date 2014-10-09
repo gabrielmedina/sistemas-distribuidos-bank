@@ -48,31 +48,50 @@ public class Caixa {
 	         	case 1:
 	         		System.out.println("\nDepósito --------------------");
 	         		System.out.print("Digite o número da conta: ");
-	         		String numero = teclado.nextLine();
+	         		String depositoNumero = teclado.nextLine();
 	         		
 	         		System.out.print("Digite o valor do depósito: ");
-	         		double valor = Double.parseDouble(teclado.nextLine());
+	         		double depositoValor = Double.parseDouble(teclado.nextLine());
 	         			
-	         		envia.println(opcao + "-" + numero + "-" + valor);
+	         		envia.println(opcao + "-" + depositoNumero + "-" + depositoValor);
 	         		
-	         		String resultado[] = recebe.nextLine().split("-");
+	         		String depositoResultado[] = recebe.nextLine().split("-");
 	         		
-	         		if(resultado[0].equalsIgnoreCase("true")){
+	         		if(depositoResultado[0].equalsIgnoreCase("true")){
 	         			System.out.println("\nDepósito realizado com sucesso! -----------");
-	         			System.out.println("Titular: " + resultado[2]);
-	         			System.out.println("Valor: " + resultado[1]);
+	         			System.out.println("Titular: " + depositoResultado[2]);
+	         			System.out.println("Depositado: " + depositoResultado[1]);
 	         		} else {
-	         			System.out.println(resultado[1]);
+	         			System.out.println("\n" + depositoResultado[1]);
+	         		}
+	         		
+	         		break;
+	         		
+	         	case 2:
+	         		System.out.println("\nSacar --------------------");
+	         		System.out.print("Digite o número da conta: ");
+	         		String saqueNumero = teclado.nextLine();
+	         		
+	         		System.out.print("Digite o valor do saque: ");
+	         		double saqueValor = Double.parseDouble(teclado.nextLine());
+	         		
+	         		envia.println(opcao + "-" + saqueNumero + "-" + saqueValor);
+	         		
+	         		String saqueResultado[] = recebe.nextLine().split("-");
+	         		
+	         		if(saqueResultado[0].equalsIgnoreCase("true")){
+	         			System.out.println("\nSaque realizado com sucesso! -----------");
+	         			System.out.println("Titular: " + saqueResultado[2]);
+	         			System.out.println("Saldo: " + saqueResultado[1]);
+	         		} else {
+	         			System.out.println("\n" + saqueResultado[1]);
 	         		}
 	         		
 	         		break;
 	         }
-	         
-//	         envia.println(opcao);
     	 }
      } else {
-    	 System.out.println("\nOps! -----------------");
-    	 System.out.println(autenticacao[1]);
+    	 System.out.println("\n" + autenticacao[1]);
      }
      
      recebe.close();

@@ -61,7 +61,7 @@ public class Tratamento extends Thread {
 								break;
 							// sacar
 							case 2:
-								System.out.println("Sacar");
+								envia.println(sacar(resultado[1], Double.parseDouble(resultado[2]), banco));
 								break;
 							// saldo
 							case 3:
@@ -98,7 +98,7 @@ public class Tratamento extends Thread {
 			}
 		}
 		
-		return "false-Sua autenticação não foi realizada.";
+		return "false-Ops! Sua autenticação não pode ser realizada.";
 	}
 	
 	private String depositar(String numero, double valor, Banco banco){		
@@ -107,11 +107,34 @@ public class Tratamento extends Thread {
 				if(conta.getNumero().equalsIgnoreCase(numero)){
 					conta.setSaldo(conta.getSaldo() + valor);
 					
-					return "true-" + conta.getSaldo() + "-" + conta.getTitular();
+					//return "true-" + valor + "-" + conta.getTitular();
+				}
+			}
+			
+			for (Conta conta : banco.getContas()){
+				if(conta.getNumero().equalsIgnoreCase(numero)){
+					System.out.println("Teste: " + conta.getSaldo());
 				}
 			}
 		}
 		
-		return "false-O depósito não foi efetuado.";
+		return "false-Ops! O depósito não foi efetuado.";
+	}
+	
+	private String sacar(String numero, double valor, Banco banco){		
+		if(valor > 0){
+			for (Conta conta : banco.getContas()){
+				if(conta.getNumero().equalsIgnoreCase(numero)){
+					if(conta.getSaldo() < valor){
+						return "false-Ops! Saldo insuficiente.";
+					} else {
+						conta.setSaldo(conta.getSaldo() - valor);						
+						return "true-" + conta.getSaldo() + "-" + conta.getTitular();
+					}
+				}
+			}
+		}
+		
+		return "false-Ops! O saque não foi efetuado.";
 	}
 }
