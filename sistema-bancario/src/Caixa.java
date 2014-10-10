@@ -48,12 +48,12 @@ public class Caixa {
 	         	case 1:
 	         		System.out.println("\nDepósito --------------------");
 	         		System.out.print("Digite o número da conta: ");
-	         		String depositoNumero = teclado.nextLine();
+	         		String depositoConta = teclado.nextLine();
 	         		
 	         		System.out.print("Digite o valor do depósito: ");
 	         		double depositoValor = Double.parseDouble(teclado.nextLine());
 	         			
-	         		envia.println(opcao + "-" + depositoNumero + "-" + depositoValor);
+	         		envia.println(opcao + "-" + depositoConta + "-" + depositoValor);
 	         		
 	         		String depositoResultado[] = recebe.nextLine().split("-");
 	         		
@@ -70,12 +70,12 @@ public class Caixa {
 	         	case 2:
 	         		System.out.println("\nSacar --------------------");
 	         		System.out.print("Digite o número da conta: ");
-	         		String saqueNumero = teclado.nextLine();
+	         		String saqueConta = teclado.nextLine();
 	         		
 	         		System.out.print("Digite o valor do saque: ");
 	         		double saqueValor = Double.parseDouble(teclado.nextLine());
 	         		
-	         		envia.println(opcao + "-" + saqueNumero + "-" + saqueValor);
+	         		envia.println(opcao + "-" + saqueConta + "-" + saqueValor);
 	         		
 	         		String saqueResultado[] = recebe.nextLine().split("-");
 	         		
@@ -85,6 +85,19 @@ public class Caixa {
 	         			System.out.println("Saldo: " + saqueResultado[1]);
 	         		} else {
 	         			System.out.println("\n" + saqueResultado[1]);
+	         		}
+	         		
+	         		break;
+	         	case 3:
+	         		System.out.println("\nSaldo --------------------");	         		
+	         		envia.println(opcao + "-" + autenticacao[3]);
+	         		
+	         		String saldoResultado[] = recebe.nextLine().split("-");
+	         		
+	         		if(saldoResultado[0].equalsIgnoreCase("true")){
+	         			System.out.println("Saldo: " + saldoResultado[1]);
+	         		} else {
+	         			System.out.println("\n" + saldoResultado[1]);
 	         		}
 	         		
 	         		break;

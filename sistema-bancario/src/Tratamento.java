@@ -65,7 +65,8 @@ public class Tratamento extends Thread {
 								break;
 							// saldo
 							case 3:
-								System.out.println("Saldo");
+								System.out.println(resultado[1]);
+								envia.println(saldo(resultado[1], banco));
 								break;
 							// extrato
 							case 4:
@@ -80,6 +81,11 @@ public class Tratamento extends Thread {
 								System.out.println("Sair");
 								break;
 						}
+						
+						texto = recebe.nextLine();
+						resultado = texto.split("-");
+						
+						opcao = Integer.parseInt(resultado[0]);
 					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -94,7 +100,7 @@ public class Tratamento extends Thread {
 		
 		for (Conta conta : banco.getContas()){
 			if(conta.getNumero().equals(dados[0]) && conta.getSenha().equals(dados[1])){
-				return "true-" + conta.getTitular();
+				return "true-" + conta.getTitular() + "-" + conta.getNumero();
 			}
 		}
 		
@@ -102,18 +108,15 @@ public class Tratamento extends Thread {
 	}
 	
 	private String depositar(String numero, double valor, Banco banco){		
-		if(valor > 0){
-			for (Conta conta : banco.getContas()){
-				if(conta.getNumero().equalsIgnoreCase(numero)){
-					conta.setSaldo(conta.getSaldo() + valor);
+		if(valor > 0){			
+			for(int i = 0; i < banco.getContas().size(); i++){
+				Conta conta = banco.getContas().get(i);
+				
+				if(conta.getNumero().equalsIgnoreCase(numero)){					
+					conta.setSaldo(conta.getSaldo() + valor);					
+					banco.getContas().set(i, conta);
 					
-					//return "true-" + valor + "-" + conta.getTitular();
-				}
-			}
-			
-			for (Conta conta : banco.getContas()){
-				if(conta.getNumero().equalsIgnoreCase(numero)){
-					System.out.println("Teste: " + conta.getSaldo());
+					return "true-" + valor + "-" + conta.getTitular();
 				}
 			}
 		}
@@ -123,12 +126,16 @@ public class Tratamento extends Thread {
 	
 	private String sacar(String numero, double valor, Banco banco){		
 		if(valor > 0){
-			for (Conta conta : banco.getContas()){
+			for(int i = 0; i < banco.getContas().size(); i++){
+				Conta conta = banco.getContas().get(i);
+				
 				if(conta.getNumero().equalsIgnoreCase(numero)){
 					if(conta.getSaldo() < valor){
 						return "false-Ops! Saldo insuficiente.";
 					} else {
-						conta.setSaldo(conta.getSaldo() - valor);						
+						conta.setSaldo(conta.getSaldo() - valor);	
+						banco.getContas().set(i, conta);
+						
 						return "true-" + conta.getSaldo() + "-" + conta.getTitular();
 					}
 				}
@@ -136,5 +143,17 @@ public class Tratamento extends Thread {
 		}
 		
 		return "false-Ops! O saque não foi efetuado.";
+	}
+	
+	private String saldo(String numero, Banco banco){
+		for(int i = 0; i < banco.getContas().size(); i++){
+			Conta conta = banco.getContas().get(i);
+			
+			if(conta.getNumero().equalsIgnoreCase(numero)){
+				return "true-" + conta.getSaldo();
+			}
+		}
+		
+		return "false-Ops! Algo de errado não está certo";
 	}
 }
