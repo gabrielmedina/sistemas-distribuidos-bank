@@ -8,18 +8,18 @@ public class Tratamento extends Thread {
 	// atributos
 	private Socket caixa;
 	private String name;
+	private Banco banco;
 	
 	// contrutor
-	public Tratamento(Socket caixa, String name) {
+	public Tratamento(Socket caixa, String name, Banco banco) {
 		this.caixa = caixa;
 		this.name = name;
+		this.banco = banco;
 	}
 	
 	// métodos
 	public void run(){
 		System.out.println(this.name + ": " + caixa.getInetAddress().getHostAddress() + " conectou-se.");
-		
-		Banco banco = new Banco();
 		
 		while(true){
 			Scanner recebe = null;
@@ -65,12 +65,11 @@ public class Tratamento extends Thread {
 								break;
 							// saldo
 							case 3:
-								System.out.println(resultado[1]);
 								envia.println(saldo(resultado[1], banco));
 								break;
 							// extrato
 							case 4:
-								System.out.println("Extrato");
+								envia.println(extrato(resultado[1], banco));
 								break;
 							// ajuda
 							case 8:
@@ -95,11 +94,19 @@ public class Tratamento extends Thread {
 		}
 	}
 	
-	private String verificarLogin(String texto, Banco banco){
+	private String verificarLogin(String texto, Banco banco){		
 		String[] dados = texto.split("-");
 		
+		if(dados[0].equalsIgnoreCase("")){
+			return "false-Ops! Campo conta está em branco";
+		}
+		
+		if(dados[1].equalsIgnoreCase("")){
+			return "false-Ops! Campo senha está em branco";
+		}
+		
 		for (Conta conta : banco.getContas()){
-			if(conta.getNumero().equals(dados[0]) && conta.getSenha().equals(dados[1])){
+			if(conta.getNumero().equalsIgnoreCase(dados[0]) && conta.getSenha().equalsIgnoreCase(dados[1])){
 				return "true-" + conta.getTitular() + "-" + conta.getNumero();
 			}
 		}
@@ -107,24 +114,47 @@ public class Tratamento extends Thread {
 		return "false-Ops! Sua autenticação não pode ser realizada.";
 	}
 	
-	private String depositar(String numero, double valor, Banco banco){		
-		if(valor > 0){			
-			for(int i = 0; i < banco.getContas().size(); i++){
-				Conta conta = banco.getContas().get(i);
-				
-				if(conta.getNumero().equalsIgnoreCase(numero)){					
-					conta.setSaldo(conta.getSaldo() + valor);					
-					banco.getContas().set(i, conta);
-					
-					return "true-" + valor + "-" + conta.getTitular();
-				}
+	private String depositar(String numero, double valor, Banco banco){
+		if(numero.equalsIgnoreCase("")){
+			return "false-Ops! Campo conta está em branco";
+		}
+		
+		if(valor == 0){
+			return "false-Ops! Campo valor está em branco";
+		}
+		
+		if(valor < 0){
+			return "false-Ops! Valor de depósito negativo";
+		}
+		
+		for(int i = 0; i < banco.getContas().size(); i++){
+			Conta conta = banco.getContas().get(i);
+			
+			if(conta.getNumero().equalsIgnoreCase(numero)){				
+				conta.setSaldo(conta.getSaldo() + valor);
+				conta.setExtrato(conta.getExtrato() + "-Depósito: " + valor);
+				banco.getContas().set(i, conta);
+			
+				return "true-" + valor + "-" + conta.getTitular();
 			}
 		}
 		
 		return "false-Ops! O depósito não foi efetuado.";
 	}
 	
-	private String sacar(String numero, double valor, Banco banco){		
+	private String sacar(String numero, double valor, Banco banco){
+		if(numero.equalsIgnoreCase("")){
+			return "false-Ops! Campo conta está em branco";
+		}
+		
+		if(valor == 0){
+			return "false-Ops! Campo valor está em branco";
+		}
+		
+		if(valor < 0){
+			return "false-Ops! Valor de depósito negativo";
+		}
+		
 		if(valor > 0){
 			for(int i = 0; i < banco.getContas().size(); i++){
 				Conta conta = banco.getContas().get(i);
@@ -133,7 +163,8 @@ public class Tratamento extends Thread {
 					if(conta.getSaldo() < valor){
 						return "false-Ops! Saldo insuficiente.";
 					} else {
-						conta.setSaldo(conta.getSaldo() - valor);	
+						conta.setSaldo(conta.getSaldo() - valor);
+						conta.setExtrato(conta.getExtrato() + "-Saque: " + valor);
 						banco.getContas().set(i, conta);
 						
 						return "true-" + conta.getSaldo() + "-" + conta.getTitular();
@@ -146,11 +177,31 @@ public class Tratamento extends Thread {
 	}
 	
 	private String saldo(String numero, Banco banco){
+		if(numero.equalsIgnoreCase("")){
+			return "false-Ops! Campo conta está em branco";
+		}
+		
 		for(int i = 0; i < banco.getContas().size(); i++){
 			Conta conta = banco.getContas().get(i);
 			
 			if(conta.getNumero().equalsIgnoreCase(numero)){
 				return "true-" + conta.getSaldo();
+			}
+		}
+		
+		return "false-Ops! Algo de errado não está certo";
+	}
+	
+	private String extrato(String numero, Banco banco){
+		if(numero.equalsIgnoreCase("")){
+			return "false-Ops! Campo conta está em branco";
+		}
+		
+		for(int i = 0; i < banco.getContas().size(); i++){
+			Conta conta = banco.getContas().get(i);
+			
+			if(conta.getNumero().equalsIgnoreCase(numero)){
+				return "true" + conta.getExtrato();
 			}
 		}
 		

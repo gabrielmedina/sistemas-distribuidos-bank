@@ -5,6 +5,7 @@ public class Conta {
 	private String numero;
 	private String senha;
 	private double saldo;
+	private String extrato;
 	
 	// contrutor
 	public Conta(String titular, String numero, String senha, double saldo){
@@ -12,11 +13,20 @@ public class Conta {
 		this.numero = numero;
 		this.senha = senha;
 		this.saldo = saldo;
+		this.extrato = "";
 	}
 	
 	// getters e setters
 	public String getTitular() {
 		return titular;
+	}
+
+	public String getExtrato() {
+		return extrato;
+	}
+
+	public void setExtrato(String extrato) {
+		this.extrato = extrato;
 	}
 
 	public void setTitular(String titular) {

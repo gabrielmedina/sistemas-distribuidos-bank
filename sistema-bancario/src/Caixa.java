@@ -88,9 +88,10 @@ public class Caixa {
 	         		}
 	         		
 	         		break;
+	         		
 	         	case 3:
 	         		System.out.println("\nSaldo --------------------");	         		
-	         		envia.println(opcao + "-" + autenticacao[3]);
+	         		envia.println(opcao + "-" + autenticacao[2]);
 	         		
 	         		String saldoResultado[] = recebe.nextLine().split("-");
 	         		
@@ -101,6 +102,20 @@ public class Caixa {
 	         		}
 	         		
 	         		break;
+	         		
+	         	case 4:
+	         		System.out.println("\nExtrato --------------------");	         		
+	         		envia.println(opcao + "-" + autenticacao[2]);
+	         		
+	         		String extratoResultado[] = recebe.nextLine().split("-");
+	         		
+	         		if(extratoResultado[0].equalsIgnoreCase("true")){
+	         			for(int i = 1; i < extratoResultado.length; i++){
+	         				System.out.println(extratoResultado[i]);
+	         			}
+	         		} else {
+	         			System.out.println("\n" + extratoResultado[1]);
+	         		}
 	         }
     	 }
      } else {
