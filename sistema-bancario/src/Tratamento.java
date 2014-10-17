@@ -81,10 +81,12 @@ public class Tratamento extends Thread {
 								break;
 						}
 						
-						texto = recebe.nextLine();
-						resultado = texto.split("-");
-						
-						opcao = Integer.parseInt(resultado[0]);
+						if(opcao != 9 && opcao != 8){
+							texto = recebe.nextLine();
+							resultado = texto.split("-");
+							
+							opcao = Integer.parseInt(resultado[0]);
+						}
 					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
