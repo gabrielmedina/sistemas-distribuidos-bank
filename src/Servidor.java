@@ -12,9 +12,9 @@ public class Servidor {
 		int i = 1;
      
 		while (true) {
-			Socket cliente = servidor.accept();
+			Socket caixa = servidor.accept();
     	 
-			Tratamento tratamento = new Tratamento(cliente, "caixa-" + i, banco);
+			Tratamento tratamento = new Tratamento(caixa, "caixa-" + i, banco);
 			tratamento.start();
 			i++;
 		}

@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -10,7 +9,7 @@ public class Tratamento extends Thread {
 	private String name;
 	private Banco banco;
 	
-	// contrutor
+	// construtor
 	public Tratamento(Socket caixa, String name, Banco banco) {
 		this.caixa = caixa;
 		this.name = name;
@@ -20,6 +19,8 @@ public class Tratamento extends Thread {
 	// métodos
 	public void run(){
 		System.out.println(this.name + ": " + caixa.getInetAddress().getHostAddress() + " conectou-se.");
+		
+		Map mapCaixa = new Map(this.caixa);
 		
 		while(true){
 			Scanner recebe = null;
@@ -32,65 +33,50 @@ public class Tratamento extends Thread {
 			}
 			
 			String texto = new String();
-			texto = recebe.nextLine();
-			
-		   	PrintStream envia;
+			texto = mapCaixa.receber();
 		   	
-		   	try {
-		   		envia = new PrintStream(caixa.getOutputStream());
-		   		envia.println(verificarLogin(texto, banco));
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+		   	mapCaixa.enviar(verificarLogin(texto, banco));
 		   	
-		   	if(verificarLogin(texto, banco).split("-")[0].equals("true")){
-		   		try {
-					envia = new PrintStream(caixa.getOutputStream());
+		   	if(verificarLogin(texto, banco).split("-")[0].equals("true")){				
+				texto = mapCaixa.receber();
+				String resultado[] = texto.split("-");
 					
-					texto = recebe.nextLine();
-					String resultado[] = texto.split("-");
+				int opcao = Integer.parseInt(resultado[0]);
 					
-					int opcao = Integer.parseInt(resultado[0]);
-					
-					while(opcao != 9){						
-						switch(opcao){
-							// depositar 
-							case 1:
-								envia.println(depositar(resultado[1], Double.parseDouble(resultado[2]), banco));
-								break;
-							// sacar
-							case 2:
-								envia.println(sacar(resultado[1], Double.parseDouble(resultado[2]), banco));
-								break;
-							// saldo
-							case 3:
-								envia.println(saldo(resultado[1], banco));
-								break;
-							// extrato
-							case 4:
-								envia.println(extrato(resultado[1], banco));
-								break;
-							// ajuda
-							case 8:
-								System.out.println("Ajuda");
-								break;
-							// sair
-							case 9:
-								System.out.println("Sair");
-								break;
-						}
-						
-						if(opcao != 9 && opcao != 8){
-							texto = recebe.nextLine();
-							resultado = texto.split("-");
-							
-							opcao = Integer.parseInt(resultado[0]);
-						}
+				while(opcao != 9){						
+					switch(opcao){
+						// depositar 
+						case 1:
+							mapCaixa.enviar(depositar(resultado[1], Double.parseDouble(resultado[2]), banco));
+							break;
+						// sacar
+						case 2:
+							mapCaixa.enviar(sacar(resultado[1], Double.parseDouble(resultado[2]), banco));
+							break;
+						// saldo
+						case 3:
+							mapCaixa.enviar(saldo(resultado[1], banco));
+							break;
+						// extrato
+						case 4:
+							mapCaixa.enviar(extrato(resultado[1], banco));
+							break;
+						// ajuda
+						case 8:
+							System.out.println("Ajuda");
+							break;
+						// sair
+						case 9:
+							System.out.println("Sair");
+							break;
 					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					
+					if(opcao != 9 && opcao != 8){
+						texto = recebe.nextLine();
+						resultado = texto.split("-");
+						
+						opcao = Integer.parseInt(resultado[0]);
+					}
 				}
 		   	}
 		}

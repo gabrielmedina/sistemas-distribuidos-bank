@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
@@ -7,7 +6,10 @@ import java.util.Scanner;
 public class Caixa {
    public static void main(String[] args) throws UnknownHostException, IOException {
      
-	 Socket caixa = new Socket("127.0.0.1", 12345);
+	 Socket socketBanco = new Socket("127.0.0.1", 12345);
+	 
+	 Map mapBanco = new Map(socketBanco);
+	 
      System.out.println("O caixa se conectou ao servidor!\n");
      
      // login
@@ -24,11 +26,9 @@ public class Caixa {
 	     System.out.print("Senha: ");
 	     String senha = teclado.nextLine();
 	     
-	     PrintStream envia = new PrintStream(caixa.getOutputStream());     
-	     envia.println(conta + "-" + senha);
+	     mapBanco.enviar(conta + "-" + senha);
 	     
-	     Scanner recebe = new Scanner(caixa.getInputStream());
-	     String [] autenticacao = recebe.nextLine().split("-"); 
+	     String [] autenticacao = mapBanco.receber().split("-"); 
 	     
 	     if(autenticacao[0].equals("true")){
 	    	 System.out.println("\nSeja bem-vindo(a), " + autenticacao[1] + ".");
@@ -56,9 +56,9 @@ public class Caixa {
 		         		System.out.print("Digite o valor do depósito: ");
 		         		double depositoValor = Double.parseDouble(teclado.nextLine());
 		         			
-		         		envia.println(opcao + "-" + depositoConta + "-" + depositoValor);
+		         		mapBanco.enviar(opcao + "-" + depositoConta + "-" + depositoValor);
 		         		
-		         		String depositoResultado[] = recebe.nextLine().split("-");
+		         		String depositoResultado[] = mapBanco.receber().split("-");
 		         		
 		         		if(depositoResultado[0].equalsIgnoreCase("true")){
 		         			System.out.println("\nDepósito realizado com sucesso! -----------");
@@ -78,9 +78,9 @@ public class Caixa {
 		         		System.out.print("Digite o valor do saque: ");
 		         		double saqueValor = Double.parseDouble(teclado.nextLine());
 		         		
-		         		envia.println(opcao + "-" + saqueConta + "-" + saqueValor);
+		         		mapBanco.enviar(opcao + "-" + saqueConta + "-" + saqueValor);
 		         		
-		         		String saqueResultado[] = recebe.nextLine().split("-");
+		         		String saqueResultado[] = mapBanco.receber().split("-");
 		         		
 		         		if(saqueResultado[0].equalsIgnoreCase("true")){
 		         			System.out.println("\nSaque realizado com sucesso! -----------");
@@ -94,9 +94,9 @@ public class Caixa {
 		         		
 		         	case 3:
 		         		System.out.println("\nSaldo --------------------");	         		
-		         		envia.println(opcao + "-" + autenticacao[2]);
+		         		mapBanco.enviar(opcao + "-" + autenticacao[2]);
 		         		
-		         		String saldoResultado[] = recebe.nextLine().split("-");
+		         		String saldoResultado[] = mapBanco.receber().split("-");
 		         		
 		         		if(saldoResultado[0].equalsIgnoreCase("true")){
 		         			System.out.println("Saldo: " + saldoResultado[1]);
@@ -108,9 +108,9 @@ public class Caixa {
 		         		
 		         	case 4:
 		         		System.out.println("\nExtrato --------------------");	         		
-		         		envia.println(opcao + "-" + autenticacao[2]);
+		         		mapBanco.enviar(opcao + "-" + autenticacao[2]);
 		         		
-		         		String extratoResultado[] = recebe.nextLine().split("-");
+		         		String extratoResultado[] = mapBanco.receber().split("-");
 		         		
 		         		if(extratoResultado[0].equalsIgnoreCase("true")){
 		         			for(int i = 1; i < extratoResultado.length; i++){
@@ -122,7 +122,7 @@ public class Caixa {
 		         		
 		         	case 9:
 		         		System.out.println("\nOpa! Você desconectou sua conta\n\n");
-		         		envia.println(opcao);
+		         		mapBanco.enviar(String.valueOf(opcao));
 		         }
 	    	 }
 	     }
