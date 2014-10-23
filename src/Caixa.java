@@ -99,7 +99,7 @@ public class Caixa {
 		         		String saldoResultado[] = mapBanco.receber().split("-");
 		         		
 		         		if(saldoResultado[0].equalsIgnoreCase("true")){
-		         			System.out.println("Saldo: " + saldoResultado[1]);
+		         			System.out.println("	Saldo: " + saldoResultado[1]);
 		         		} else {
 		         			System.out.println("\n" + saldoResultado[1]);
 		         		}
