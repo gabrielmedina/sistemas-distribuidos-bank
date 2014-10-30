@@ -3,46 +3,52 @@ package models;
 import java.util.ArrayList;
 
 public class ArrayMap {
-	ArrayList<Map> arrayMap;
+	private ArrayList<Map> arrayMap;
 
 	public ArrayMap() {
-		arrayMap = new ArrayList<Map>();
+		this.arrayMap = new ArrayList<Map>();
 	}
 	
 	public void add(Map map){
-		arrayMap.add(map);
+		this.arrayMap.add(map);
 	}
 	
-	public void list(){
-		System.out.println("\n*************************\n" + arrayMap.size() + " Caixa(s) conectado(s).");
-		for(Map map : arrayMap){
-			System.out.println("  -> " + map.getNome());
+	public void listar(){
+		if(arrayMap.size() > 0){
+			System.out.println("\nLista de caixas");
+			
+			for(Map map : this.arrayMap){
+				System.out.println(" " + map.getNome());
+			}
+		} else {
+			System.out.println("\nNenhum caixa conectado!\n");
 		}
-		System.out.println("*************************\n");
 	}
 	
-	public void delete(String nome){
-		Map temp = null;
-		for(Map map : arrayMap){
+	public String deletar(String nome){
+		for(Map map : this.arrayMap){
 			if(map.getNome().equals(nome)){
-				temp = map;
+				this.arrayMap.remove(map);
+				return "true";
 			}
 		}
-		if(temp != null){
-			arrayMap.remove(temp);
-		}else{
-			System.out.println("NULO");
-		}
+		
+		return "false";
 	}
 	
-	public void desativar(String nome){
-		for(Map map : arrayMap){
-			if(map.getNome().equals(nome)){
-				map.enviar("Desativando Caixa");
-				arrayMap.remove(map);
-				System.out.println("\n*******************************\n" + nome +
-						" Desativado com Sucesso\n*******************************\n");
+	public String desativar(String nome){
+		for(Map map : this.arrayMap){
+			if(map.getNome().equalsIgnoreCase(nome)){
+				map.enviar("false");
+				
+				this.arrayMap.remove(map);
+				
+				System.out.println("\n" + nome + " desativado com sucesso!\n");
+				
+				return "true";
 			}
 		}
+		
+		return "false";
 	}
 }

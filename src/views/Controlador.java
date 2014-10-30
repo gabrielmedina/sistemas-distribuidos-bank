@@ -7,35 +7,39 @@ import java.net.Socket;
 import models.ArrayMap;
 import models.Map;
 import threads.Desativar;
-import threads.Desligar;
 
 public class Controlador {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException {	
 		
-		 ServerSocket servidor = new ServerSocket(54321);
-		 System.out.println("Controlador pronto!\n");
+		// Criando um obj ServerSocket
+		 ServerSocket servidor = new ServerSocket(23456);
+		 System.out.println("Controlador pronto!");
 		 
+		 // Criando um ArrayMap
 		 ArrayMap caixas = new ArrayMap();
-		 
+			
 		 int i = 1;
 		 
-		 Desativar desativar = new Desativar(caixas);
-		 desativar.run();
-		 
 		 while (true) {
+			// Criando um obj Socket
 			Socket caixa = servidor.accept();
 			
-			Map temp = new Map(caixa);
-			temp.setNome("caixa" + i);
-			caixas.add(temp);
+			// Criando um obj Map para caixa
+			Map mapCaixa = new Map(caixa);
+			mapCaixa.setNome("caixa-" + i);
 			
-			desativar.adicionar(temp);
+			// Adicionando o Map criado ao ArrayMap
+			caixas.add(mapCaixa);
 			
-			Desligar desligar = new Desligar(caixas, temp);
-			desligar.start();
+			// Criando um obj Desativar
+			Desativar desativar = new Desativar(caixas);
+			// Executando a thread
+			desativar.start();			
 					
 			i++;
-		}
-		
+		}		
 	}	
+	
+	//	servidor.close();
+	//	cliente.close();
 }

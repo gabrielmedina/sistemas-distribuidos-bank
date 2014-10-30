@@ -12,7 +12,7 @@ public class Caixa {
      
 	 // Criando um obj Socket
 	 Socket socketServidor = new Socket("127.0.0.1", 12345);
-	 Socket socketControlador = new Socket("127.0.0.1", 54321);
+	 Socket socketControlador = new Socket("127.0.0.1", 23456);
 	 
 	 // Criando um obj Map, para mapear os eventos Sockets
 	 Map mapBanco = new Map(socketServidor);
@@ -147,9 +147,6 @@ public class Caixa {
 		         		
 		         		// Enviando mensagem contendo a opção escolhida
 		         		mapBanco.enviar(String.valueOf(opcao));
-						
-		         		mapControlador.enviar("mensagem");
-						mapControlador.fechar();
 		         }
 	    	 }
 	     }

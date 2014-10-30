@@ -11,7 +11,7 @@ public class Servidor {
 		// Criando um obj Bando
 		Banco banco = new Banco();
 		
-		// Criando um obj Socket
+		// Criando um obj ServerSocket
 		ServerSocket servidor = new ServerSocket(12345);
 		System.out.println("Servidor pronto!\n");
      
@@ -23,7 +23,9 @@ public class Servidor {
     	 
 			// Criando um obj Tratamento (Thread) contendo todos os métodos necessários para manipular uma conta
 			Tratamento tratamento = new Tratamento(caixa, "caixa-" + i, banco);
+			// Executando a thread
 			tratamento.start();
+			
 			i++;
 		}
    
