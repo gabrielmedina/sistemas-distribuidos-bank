@@ -65,8 +65,12 @@ public class Caixa {
 		         		System.out.print("Digite o número da conta: ");
 		         		String depositoConta = teclado.nextLine();
 		         		
-		         		System.out.print("Digite o valor do depósito: ");
-		         		double depositoValor = Double.parseDouble(teclado.nextLine());
+		         		double depositoValor = -1;
+		         		
+		         		while(depositoValor < 0){
+		         			System.out.print("Digite o valor do depósito: ");
+		         			depositoValor = Double.parseDouble(teclado.nextLine());
+		         		}
 		         		
 		         		// Enviando mensagem contendo a opção escolhida, o número da conta a ser depositado e o valor
 		         		mapBanco.enviar(opcao + "-" + depositoConta + "-" + depositoValor);
@@ -89,8 +93,12 @@ public class Caixa {
 		         		System.out.print("Digite o número da conta: ");
 		         		String saqueConta = teclado.nextLine();
 		         		
-		         		System.out.print("Digite o valor do saque: ");
-		         		double saqueValor = Double.parseDouble(teclado.nextLine());
+		         		double saqueValor = -1;
+		         		
+		         		while(saqueValor < 0){
+			         		System.out.print("Digite o valor do saque: ");
+			         		saqueValor = Double.parseDouble(teclado.nextLine());
+		         		}
 		         		
 		         		// Enviando mensagem contendo a opção escolhida, o número da conta a ser sacado e o valor
 		         		mapBanco.enviar(opcao + "-" + saqueConta + "-" + saqueValor);
@@ -142,11 +150,15 @@ public class Caixa {
 		         			System.out.println("\n" + extratoResultado[1]);
 		         		}
 		         		
+		         		break;
+		         		
 		         	case 9:
 		         		System.out.println("\nOpa! Você desconectou sua conta\n\n");
 		         		
 		         		// Enviando mensagem contendo a opção escolhida
 		         		mapBanco.enviar(String.valueOf(opcao));
+		         		
+		         		break;
 		         }
 	    	 }
 	     }

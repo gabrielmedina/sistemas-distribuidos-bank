@@ -29,7 +29,7 @@ public class Desativar extends Thread {
 					break;
 					
 				case 2:					
-					System.out.print("\nInforme o nome do caixa para ser desativado: ");
+					System.out.print("\nDigite o nome do caixa para desativar: ");
 					String n = teclado.nextLine();
 					caixas.desativar(n);
 					break;
