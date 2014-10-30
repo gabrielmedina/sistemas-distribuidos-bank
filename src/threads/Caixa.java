@@ -1,18 +1,22 @@
+package threads;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+import models.Map;
+
 public class Caixa {
    public static void main(String[] args) throws UnknownHostException, IOException {
      
+	 // Criando um obj Socket
 	 Socket socketBanco = new Socket("127.0.0.1", 12345);
+	 System.out.println("O caixa se conectou ao servidor!\n");
 	 
+	 // Criando um obj Map, para mapear os eventos Sockets
 	 Map mapBanco = new Map(socketBanco);
-	 
-     System.out.println("O caixa se conectou ao servidor!\n");
      
-     // login
+     // Criando obj Scanner para leitura de dados via console
      Scanner teclado = new Scanner(System.in);
      
      boolean ativo = true;
@@ -26,10 +30,13 @@ public class Caixa {
 	     System.out.print("Senha: ");
 	     String senha = teclado.nextLine();
 	     
+	     // Enviando mensagem contendo o número da conta e senha para o servidor
 	     mapBanco.enviar(conta + "-" + senha);
 	     
+	     // Recebendo mensagem contendo o retorno do método de autenticação
 	     String [] autenticacao = mapBanco.receber().split("-"); 
 	     
+	     // Caso a primeira mensagem retornada, divididas de acordo com a ocorrência "-", seja true
 	     if(autenticacao[0].equals("true")){
 	    	 System.out.println("\nSeja bem-vindo(a), " + autenticacao[1] + ".");
 	    	 
@@ -55,9 +62,11 @@ public class Caixa {
 		         		
 		         		System.out.print("Digite o valor do depósito: ");
 		         		double depositoValor = Double.parseDouble(teclado.nextLine());
-		         			
+		         		
+		         		// Enviando mensagem contendo a opção escolhida, o número da conta a ser depositado e o valor
 		         		mapBanco.enviar(opcao + "-" + depositoConta + "-" + depositoValor);
 		         		
+		         		// Recebendo mensagem contendo o retorno do método depositar
 		         		String depositoResultado[] = mapBanco.receber().split("-");
 		         		
 		         		if(depositoResultado[0].equalsIgnoreCase("true")){
@@ -78,8 +87,10 @@ public class Caixa {
 		         		System.out.print("Digite o valor do saque: ");
 		         		double saqueValor = Double.parseDouble(teclado.nextLine());
 		         		
+		         		// Enviando mensagem contendo a opção escolhida, o número da conta a ser sacado e o valor
 		         		mapBanco.enviar(opcao + "-" + saqueConta + "-" + saqueValor);
 		         		
+		         		// Recebendo mensagem contendo o retorno do método sacar
 		         		String saqueResultado[] = mapBanco.receber().split("-");
 		         		
 		         		if(saqueResultado[0].equalsIgnoreCase("true")){
@@ -93,13 +104,16 @@ public class Caixa {
 		         		break;
 		         		
 		         	case 3:
-		         		System.out.println("\nSaldo --------------------");	         		
+		         		System.out.println("\nSaldo --------------------");
+		         		
+		         		// Enviando mensagem contendo a opção escolhida e o número da conta logada
 		         		mapBanco.enviar(opcao + "-" + autenticacao[2]);
 		         		
+		         		// Recebendo mensagem contendo o retorno do método saldo
 		         		String saldoResultado[] = mapBanco.receber().split("-");
 		         		
 		         		if(saldoResultado[0].equalsIgnoreCase("true")){
-		         			System.out.println("	Saldo: " + saldoResultado[1]);
+		         			System.out.println("Saldo: " + saldoResultado[1]);
 		         		} else {
 		         			System.out.println("\n" + saldoResultado[1]);
 		         		}
@@ -107,9 +121,12 @@ public class Caixa {
 		         		break;
 		         		
 		         	case 4:
-		         		System.out.println("\nExtrato --------------------");	         		
+		         		System.out.println("\nExtrato --------------------");
+		         		
+		         		// Enviando mensagem contendo a opção escolhida e o número da conta logada
 		         		mapBanco.enviar(opcao + "-" + autenticacao[2]);
 		         		
+		         		// Recebendo mensagem contendo o retorno do método extrado
 		         		String extratoResultado[] = mapBanco.receber().split("-");
 		         		
 		         		if(extratoResultado[0].equalsIgnoreCase("true")){
@@ -122,6 +139,8 @@ public class Caixa {
 		         		
 		         	case 9:
 		         		System.out.println("\nOpa! Você desconectou sua conta\n\n");
+		         		
+		         		// Enviando mensagem contendo a opção escolhida
 		         		mapBanco.enviar(String.valueOf(opcao));
 		         }
 	    	 }

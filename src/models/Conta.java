@@ -1,13 +1,14 @@
+package models;
 
 public class Conta {
-	// atributos
+	// Atributos
 	private String titular;
 	private String numero;
 	private String senha;
 	private double saldo;
 	private String extrato;
 	
-	// contrutor
+	// Contrutor
 	public Conta(String titular, String numero, String senha, double saldo){
 		this.titular = titular;
 		this.numero = numero;
@@ -16,7 +17,7 @@ public class Conta {
 		this.extrato = "";
 	}
 	
-	// getters e setters
+	// Getters e Setters
 	public String getTitular() {
 		return titular;
 	}
