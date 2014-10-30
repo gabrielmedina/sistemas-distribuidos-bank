@@ -1,9 +1,10 @@
-package threads;
+package views;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import models.Banco;
+import threads.Tratamento;
 
 public class Servidor {
 	public static void main(String[] args) throws IOException {
@@ -12,7 +13,7 @@ public class Servidor {
 		
 		// Criando um obj Socket
 		ServerSocket servidor = new ServerSocket(12345);
-		System.out.println("Porta 12345 aberta!");
+		System.out.println("Servidor pronto!\n");
      
 		int i = 1;
      

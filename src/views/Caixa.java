@@ -1,20 +1,25 @@
-package threads;
+package views;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
 import models.Map;
+import threads.TratamentoCaixa;
 
 public class Caixa {
    public static void main(String[] args) throws UnknownHostException, IOException {
      
 	 // Criando um obj Socket
-	 Socket socketBanco = new Socket("127.0.0.1", 12345);
-	 System.out.println("O caixa se conectou ao servidor!\n");
+	 Socket socketServidor = new Socket("127.0.0.1", 12345);
+	 Socket socketControlador = new Socket("127.0.0.1", 54321);
 	 
 	 // Criando um obj Map, para mapear os eventos Sockets
-	 Map mapBanco = new Map(socketBanco);
+	 Map mapBanco = new Map(socketServidor);
+	 Map mapControlador = new Map(socketControlador);
+	 
+	 TratamentoCaixa desativarCaixa = new TratamentoCaixa(socketControlador);
+	 desativarCaixa.start();
      
      // Criando obj Scanner para leitura de dados via console
      Scanner teclado = new Scanner(System.in);
@@ -142,6 +147,9 @@ public class Caixa {
 		         		
 		         		// Enviando mensagem contendo a opção escolhida
 		         		mapBanco.enviar(String.valueOf(opcao));
+						
+		         		mapControlador.enviar("mensagem");
+						mapControlador.fechar();
 		         }
 	    	 }
 	     }

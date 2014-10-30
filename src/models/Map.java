@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Map {
 	// Atributos
-	private int nome;
+	private String nome;
 	private Socket sockect;
 	
 	PrintStream envia;
@@ -35,12 +35,21 @@ public class Map {
 		return recebe.nextLine();
 	}
 	
+	// Fechando o socket
+	public void fechar(){
+		try {
+			sockect.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
 	// Getters e Setters
-	public int getNome() {
+	public String getNome() {
 		return nome;
 	}
 
-	public void setNome(int nome) {
+	public void setNome(String nome) {
 		this.nome = nome;
 	}
 	
