@@ -18,8 +18,8 @@ public class Caixa {
 	 Map mapBanco = new Map(socketServidor);
 	 Map mapControlador = new Map(socketControlador);
 	 
-	 TratamentoCaixa desativarCaixa = new TratamentoCaixa(socketControlador);
-	 desativarCaixa.start();
+	 TratamentoCaixa tratamentoCaixa = new TratamentoCaixa(socketControlador);
+	 tratamentoCaixa.start();
      
      // Criando obj Scanner para leitura de dados via console
      Scanner teclado = new Scanner(System.in);

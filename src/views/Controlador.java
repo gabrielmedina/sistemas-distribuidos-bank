@@ -29,6 +29,8 @@ public class Controlador {
 			temp.setNome("caixa" + i);
 			caixas.add(temp);
 			
+			desativar.adicionar(temp);
+			
 			Desligar desligar = new Desligar(caixas, temp);
 			desligar.start();
 					

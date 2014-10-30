@@ -6,13 +6,17 @@ import models.ArrayMap;
 import models.Map;
 
 public class Desativar {
-	Map map;
-	Boolean status;
-	ArrayMap caixas;	
+	private Map map;
+	private Boolean status;
+	private ArrayMap caixas;	
 	
 	public Desativar(ArrayMap caixas) {
 		this.caixas = caixas;
 		this.status = true;
+	}
+	
+	public void adicionar(Map map){
+		this.caixas.add(map);
 	}
 	
 	public void envia(){		
