@@ -1,3 +1,3 @@
-# Sistemas Distribuídos
+# Bank
 
-> Repositório criado para armazenar os exercícios desenvolvidos na faculdade.
+Trabalho em Java para disciplina de Sistemas Distribuídos.
